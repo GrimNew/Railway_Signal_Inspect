@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Railway Signal Inspect</string>
+    <string name="username">账号</string>
+    <string name="password">密码</string>
+    <string name="username_hint">请输入账号</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="welcome_text">铁路信号巡检系统</string>
+    <string name="login_button">登陆</string>
+</resources>
