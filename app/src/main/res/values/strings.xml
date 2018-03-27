@@ -1,9 +1,33 @@
 <resources>
-    <string name="app_name">Railway Signal Inspect</string>
+    <string name="app_name">Railway Signal Inspection</string>
     <string name="username">账号</string>
     <string name="password">密码</string>
     <string name="username_hint">请输入账号</string>
     <string name="password_hint">请输入密码</string>
-    <string name="welcome_text">铁路信号巡检系统</string>
+    <string name="welcome_headline">铁路信号巡检系统</string>
     <string name="login_button">登陆</string>
+    <string name="welcome_second_headline">Railway Signal Inspection System\nPower by Grim</string>
+    <string name="save_check">记住账号密码</string>
+    <string name="menu_item_setting">设置</string>
+    <string name="menu_item_logout">退出</string>
+    <string name="address_hint">域名或IP地址</string>
+    <string name="address_text">Domain name or IP address</string>
+    <string name="port_text">Port</string>
+    <string name="port_hint">端口号</string>
+    <string name="button_setting_commit">确认</string>
+    <string name="button_setting_cancle">取消</string>
+    <string name="scan_hint">请扫描设备标签</string>
+    <string name="button_info">查看设备详情</string>
+    <string name="logo_nfc">logo_nfc</string>
+    <string name="button_burn">写入数据</string>
+    <string name="burn_device_id_hint">请输入唯一设备号</string>
+    <string name="burn_device_name_hint">请输入通用设备名</string>
+    <string name="burn_device_type_hint">请输入设备型号</string>
+    <string name="burn_device_location_hint">请输入设备公里表或载体</string>
+    <string name="burn_hint">请将手机靠近标签完成写入</string>
+    <string name="device_id">设备号</string>
+    <string name="device_name">设备名</string>
+    <string name="device_type">设备型号</string>
+    <string name="device_location">设备位置</string>
+    <string name="device_simple_info">device_id,device_name,device_type,device_location</string>
 </resources>

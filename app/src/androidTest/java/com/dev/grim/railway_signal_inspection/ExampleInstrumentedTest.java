@@ -1,4 +1,4 @@
-package com.dev.grim.railwaysignalinspect;
+package com.dev.grim.railway_signal_inspection;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.dev.grim.railwaysignalinspect", appContext.getPackageName());
+        assertEquals("com.dev.grim.railway_signal_inspection", appContext.getPackageName());
     }
 }

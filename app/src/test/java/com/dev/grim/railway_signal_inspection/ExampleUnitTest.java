@@ -1,4 +1,4 @@
-package com.dev.grim.railwaysignalinspect;
+package com.dev.grim.railway_signal_inspection;
 
 import org.junit.Test;
 
