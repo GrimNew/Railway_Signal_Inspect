@@ -50,7 +50,7 @@
         android:layout_marginStart="3dp"
         android:ems="10"
         android:hint="@string/username_hint"
-        android:inputType="text"
+        android:inputType="textNoSuggestions"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline8"

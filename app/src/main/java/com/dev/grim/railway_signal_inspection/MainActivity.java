@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
         CheckBox checkBox = findViewById(R.id.save_check);
 
         //判断曾经是否保存过账号密码，若保存过，则自动填充TextView并勾选CheckBox
-        SharedPreferences sharedPreferences = getSharedPreferences("user_info",MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("saved",false)){
-            username.setText(sharedPreferences.getString("username",""));
-            password.setText(sharedPreferences.getString("password",""));
+        SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("saved", false)) {
+            username.setText(sharedPreferences.getString("username", ""));
+            password.setText(sharedPreferences.getString("password", ""));
             checkBox.setChecked(true);
         }
 
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override//创建菜单
     public boolean onCreateOptionsMenu(Menu menu) {
         //与menu布局文件绑定
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -118,15 +118,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //按照Android开发规范，子线程处理网络连接
-        class LoginThread implements Runnable{
+        class LoginThread implements Runnable {
             @Override
             public void run() {
                 try {
                     //连接Socket，发送账号密码校验
                     if (((SuperSocket) getApplication()).MySocketConnect()) {
-                        ((SuperSocket) getApplication()).getPrintWriter().println("0#"+getUsernameText() +"#"+ getPasswordText());
+                        ((SuperSocket) getApplication()).getPrintWriter().println("0#" + getUsernameText() + "#" + getPasswordText());
                         ((SuperSocket) getApplication()).getPrintWriter().flush();
-
                         //根据登陆用户权限不同，跳转到不同页面进行不同操作
                         switch ((((SuperSocket) getApplication()).getBufferedReader().readLine())) {
                             //跳转到烧录界面（管理员模式）
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                                 ((SuperSocket) getApplication()).MySocketClose();
                                 break;
                         }
-                    }else{
+                    } else {
                         runOnUiThread(() -> Toast.makeText(MainActivity.this, "连接超时，请检查网络环境", Toast.LENGTH_SHORT).show());
                     }
                 } catch (IOException e) {
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         //双击back键退出
         if (System.currentTimeMillis() - ClickTime > 800) {
-            Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
             ClickTime = System.currentTimeMillis();
         } else {
             finish();

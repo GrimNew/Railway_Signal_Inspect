@@ -28,7 +28,12 @@ public class BurnActivity extends AppCompatActivity {
             Toast.makeText(BurnActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
             ClickTime = System.currentTimeMillis();
         } else {
-            ((SuperSocket) getApplication()).MySocketClose();
+            new Thread(){
+                @Override
+                public void run() {
+                    ((SuperSocket) getApplication()).MySocketClose();
+                }
+            };
             finish();
         }
     }
