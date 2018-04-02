@@ -32,7 +32,7 @@ public class ScanActivity extends AppCompatActivity {
             new Thread(){
                 @Override
                 public void run() {
-                    ((SuperSocket) getApplication()).MySocketClose();
+                    ((SuperApplication) getApplication()).SocketClose();
                 }
             };
             finish();

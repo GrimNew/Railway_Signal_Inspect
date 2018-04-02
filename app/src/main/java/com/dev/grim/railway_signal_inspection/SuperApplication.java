@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.NfcAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,8 +27,11 @@ import javax.net.ssl.TrustManagerFactory;
 
 import static javax.net.ssl.SSLContext.getInstance;
 
+/*
+* 单例类实现所有Activity可使用的对象和方法
+* */
+public class SuperApplication extends Application {
 
-public class SuperSocket extends Application {
     //资源打开和关闭在不同的方法中，需要资源共享
     SSLSocket sslSocket = null;
     OutputStream outputStream = null;
@@ -49,7 +53,7 @@ public class SuperSocket extends Application {
     }
 
     //按下登陆按钮后，打开相关socket资源准备为各线程提供数据流支持
-    boolean MySocketConnect() {
+    boolean SocketConnect() {
         try {
             //根据ip_config配置进行socket连接
             SharedPreferences sharedPreferences = getSharedPreferences("ip_config", MODE_PRIVATE);
@@ -90,7 +94,7 @@ public class SuperSocket extends Application {
     }
 
     //应用退出时，提供一个关闭socket资源的方法
-    void MySocketClose() {
+    void SocketClose() {
         if (sslSocket.isConnected()) {
             try {
                 bufferedReader.close();
@@ -113,5 +117,19 @@ public class SuperSocket extends Application {
             return networkInfo != null && networkInfo.isAvailable();
         }
         return false;
+    }
+
+    class NFCClass {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
+    }
+
+    //NFC硬件支持检测
+    boolean NFCHardwareCheck() {
+        return new NFCClass().nfcAdapter !=null;
+    }
+
+    //NFC状态检查
+    boolean NFCStatus(){
+        return new NFCClass().nfcAdapter.isEnabled();
     }
 }

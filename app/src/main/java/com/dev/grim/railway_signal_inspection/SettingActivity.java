@@ -21,8 +21,7 @@ public class SettingActivity extends AppCompatActivity {
         Button setting_cancle = findViewById(R.id.button_setting_cancle);
         android.support.v7.widget.Toolbar toolbar2 = findViewById(R.id.toolbar2);
 
-        //设置标题和标题文字颜色
-        toolbar2.setTitle("设置");
+        //设置标题文字颜色
         toolbar2.setTitleTextColor(android.graphics.Color.WHITE);
         setSupportActionBar(toolbar2);
 

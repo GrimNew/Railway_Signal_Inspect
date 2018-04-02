@@ -2,13 +2,13 @@ package com.dev.grim.railway_signal_inspection;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         //设置Toolbar的Title字体颜色
         toolbar.setTitleTextColor(android.graphics.Color.WHITE);
 
-        final TextView username = findViewById(R.id.username_text);
-        final TextView password = findViewById(R.id.password_text);
+        final EditText username = findViewById(R.id.username_text);
+        final EditText password = findViewById(R.id.password_text);
 
         CheckBox checkBox = findViewById(R.id.save_check);
 
@@ -49,33 +49,38 @@ public class MainActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(v -> {
-            //检查网络状态，网络未连接则Toast提示
-            if (((SuperSocket) getApplication()).InternetStatus(MainActivity.this)) {
-                //获取登陆用户名密码
-                usernameText = username.getText().toString();
-                passwordText = password.getText().toString();
+            //检查NFC硬件支持
+            if(!((SuperApplication) getApplication()).NFCHardwareCheck()){
+                Toast.makeText(MainActivity.this, "该设备不支持NFC", Toast.LENGTH_SHORT).show();
+            }else if(!((SuperApplication) getApplication()).NFCStatus()){
+                Toast.makeText(MainActivity.this, "请打开NFC开关", Toast.LENGTH_SHORT).show();
+            }else{
+                //检查网络状态，网络未连接则Toast提示
+                if (((SuperApplication) getApplication()).InternetStatus(MainActivity.this)) {
+                    //获取登陆用户名密码
+                    usernameText = username.getText().toString();
+                    passwordText = password.getText().toString();
 
-                if (usernameText.equals("") || passwordText.equals("")) {
-                    Toast.makeText(MainActivity.this, "账号密码不能为空", Toast.LENGTH_SHORT).show();
-                } else {
-                    //实例化Login对象并调用sendMessage()方法
-                    Login login = new Login();
-                    login.sendMessage();
-
-                    //CheckBox勾选则更新账户名密码，未勾选则放弃保存，则下次不再自动填充TextView和勾选CheckBox
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    if (checkBox.isChecked()) {
-                        editor.putString("username", usernameText);
-                        editor.putString("password", passwordText);
-                        editor.putBoolean("saved", true);
-                        editor.apply();
+                    if (usernameText.equals("") || passwordText.equals("")) {
+                        Toast.makeText(MainActivity.this, "账号密码不能为空", Toast.LENGTH_SHORT).show();
                     } else {
-                        editor.putBoolean("saved", false);
-                        editor.apply();
+                        //启动线程执行登陆
+                        new Thread(new Login()).start();
+                        //CheckBox勾选则更新账户名密码，未勾选则放弃保存，则下次不再自动填充TextView和勾选CheckBox
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if (checkBox.isChecked()) {
+                            editor.putString("username", usernameText);
+                            editor.putString("password", passwordText);
+                            editor.putBoolean("saved", true);
+                            editor.apply();
+                        } else {
+                            editor.putBoolean("saved", false);
+                            editor.apply();
+                        }
                     }
+                } else {
+                    Toast.makeText(MainActivity.this, "请检查网络连接", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(MainActivity.this, "请检查网络连接", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -109,54 +114,45 @@ public class MainActivity extends AppCompatActivity {
         return passwordText;
     }
 
-    class Login {
-        void sendMessage() {
-            //启动Runnable新线程处理网络连接
-            LoginThread loginThread = new LoginThread();
-            Thread thread = new Thread(loginThread);
-            thread.start();
-        }
-
-        //按照Android开发规范，子线程处理网络连接
-        class LoginThread implements Runnable {
-            @Override
-            public void run() {
-                try {
-                    //连接Socket，发送账号密码校验
-                    if (((SuperSocket) getApplication()).MySocketConnect()) {
-                        ((SuperSocket) getApplication()).getPrintWriter().println("0#" + getUsernameText() + "#" + getPasswordText());
-                        ((SuperSocket) getApplication()).getPrintWriter().flush();
-                        //根据登陆用户权限不同，跳转到不同页面进行不同操作
-                        switch ((((SuperSocket) getApplication()).getBufferedReader().readLine())) {
-                            //跳转到烧录界面（管理员模式）
-                            case "0": {
-                                runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
-                                Intent intent = new Intent(MainActivity.this, BurnActivity.class);
-                                startActivity(intent);
-                                finish();
-                                break;
-                            }
-                            //跳转到扫描界面（用户模式）
-                            case "1": {
-                                //调用Activity的runOnUiThread()方法匿名内部类实现非主线程更新UI
-                                runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
-                                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                                startActivity(intent);
-                                finish();
-                                break;
-                            }
-                            //登陆失败，不进行页面跳转
-                            default:
-                                runOnUiThread(() -> Toast.makeText(MainActivity.this, "账号或密码错误，请重新登陆", Toast.LENGTH_SHORT).show());
-                                ((SuperSocket) getApplication()).MySocketClose();
-                                break;
+    //按照Android开发规范，子线程处理网络连接
+    class Login implements Runnable {
+        @Override
+        public void run() {
+            try {
+                //连接Socket，发送账号密码校验
+                if (((SuperApplication) getApplication()).SocketConnect()) {
+                    ((SuperApplication) getApplication()).getPrintWriter().println("0#" + getUsernameText() + "#" + getPasswordText());
+                    ((SuperApplication) getApplication()).getPrintWriter().flush();
+                    //根据登陆用户权限不同，跳转到不同页面进行不同操作
+                    switch ((((SuperApplication) getApplication()).getBufferedReader().readLine())) {
+                        //跳转到烧录界面（管理员模式）
+                        case "0": {
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
+                            Intent intent = new Intent(MainActivity.this, BurnActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
                         }
-                    } else {
-                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "连接超时，请检查网络环境", Toast.LENGTH_SHORT).show());
+                        //跳转到扫描界面（用户模式）
+                        case "1": {
+                            //调用Activity的runOnUiThread()方法匿名内部类实现非主线程更新UI
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
+                            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        }
+                        //登陆失败，不进行页面跳转
+                        default:
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this, "账号或密码错误，请重新登陆", Toast.LENGTH_SHORT).show());
+                            ((SuperApplication) getApplication()).SocketClose();
+                            break;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else {
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "连接超时，请检查网络环境", Toast.LENGTH_SHORT).show());
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
