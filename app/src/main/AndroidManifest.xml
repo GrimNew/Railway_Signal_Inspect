@@ -34,25 +34,19 @@
         </activity>
         <activity
             android:name="com.dev.grim.railway_signal_inspection.SettingActivity"
-            android:label="@string/setting_lable"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:label="@string/setting_label"
+            android:launchMode="singleTask"/>
         <activity
             android:name="com.dev.grim.railway_signal_inspection.ScanActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:label="@string/scan_label"
+            android:launchMode="singleTask"/>
         <activity
             android:name="com.dev.grim.railway_signal_inspection.BurnActivity"
-            android:launchMode="singleTask">
-
-        </activity>
-        <activity
-            android:name="com.dev.grim.railway_signal_inspection.InfoActivity"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:label="@string/burn_label"
+            android:launchMode="singleTask"/>
+        <activity android:name="com.dev.grim.railway_signal_inspection.SelectActivity"
+            android:label="@string/select_label"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

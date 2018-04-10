@@ -2,6 +2,7 @@ package com.dev.grim.railway_signal_inspection;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -49,10 +50,11 @@ public class MainActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(v -> {
+            NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
             //检查NFC硬件支持
-            if(!((SuperApplication) getApplication()).NFCHardwareCheck()){
+            if(nfcAdapter == null){
                 Toast.makeText(MainActivity.this, "该设备不支持NFC", Toast.LENGTH_SHORT).show();
-            }else if(!((SuperApplication) getApplication()).NFCStatus()){
+            }else if(!nfcAdapter.isEnabled()){
                 Toast.makeText(MainActivity.this, "请打开NFC开关", Toast.LENGTH_SHORT).show();
             }else{
                 //检查网络状态，网络未连接则Toast提示
@@ -126,15 +128,15 @@ public class MainActivity extends AppCompatActivity {
                     //根据登陆用户权限不同，跳转到不同页面进行不同操作
                     switch ((((SuperApplication) getApplication()).getBufferedReader().readLine())) {
                         //跳转到烧录界面（管理员模式）
-                        case "0": {
+                        case "00": {
                             runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
-                            Intent intent = new Intent(MainActivity.this, BurnActivity.class);
+                            Intent intent = new Intent(MainActivity.this, SelectActivity.class);
                             startActivity(intent);
                             finish();
                             break;
                         }
                         //跳转到扫描界面（用户模式）
-                        case "1": {
+                        case "01": {
                             //调用Activity的runOnUiThread()方法匿名内部类实现非主线程更新UI
                             runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
                             Intent intent = new Intent(MainActivity.this, ScanActivity.class);

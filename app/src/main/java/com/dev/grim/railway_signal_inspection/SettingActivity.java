@@ -18,12 +18,12 @@ public class SettingActivity extends AppCompatActivity {
         final TextView address = findViewById(R.id.address_text);
         final TextView port = findViewById(R.id.port_text);
         Button setting_commit = findViewById(R.id.button_setting_commit);
-        Button setting_cancle = findViewById(R.id.button_setting_cancle);
-        android.support.v7.widget.Toolbar toolbar2 = findViewById(R.id.toolbar2);
+        Button setting_cancel = findViewById(R.id.button_setting_cancle);
+        android.support.v7.widget.Toolbar setting_toolbar = findViewById(R.id.setting_toolbar);
 
         //设置标题文字颜色
-        toolbar2.setTitleTextColor(android.graphics.Color.WHITE);
-        setSupportActionBar(toolbar2);
+        setting_toolbar.setTitleTextColor(android.graphics.Color.WHITE);
+        setSupportActionBar(setting_toolbar);
 
         //显示设置默认值
         SharedPreferences sharedPreferences = getSharedPreferences("ip_config", MODE_PRIVATE);
@@ -42,6 +42,6 @@ public class SettingActivity extends AppCompatActivity {
             startActivity(intent);
         });
         //取消按钮点击事件，跳转到登录页
-        setting_cancle.setOnClickListener(v -> startActivity(intent));
+        setting_cancel.setOnClickListener(v -> startActivity(intent));
     }
 }

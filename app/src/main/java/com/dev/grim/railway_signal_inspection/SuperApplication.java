@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.nfc.NfcAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -117,19 +116,5 @@ public class SuperApplication extends Application {
             return networkInfo != null && networkInfo.isAvailable();
         }
         return false;
-    }
-
-    class NFCClass {
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
-    }
-
-    //NFC硬件支持检测
-    boolean NFCHardwareCheck() {
-        return new NFCClass().nfcAdapter !=null;
-    }
-
-    //NFC状态检查
-    boolean NFCStatus(){
-        return new NFCClass().nfcAdapter.isEnabled();
     }
 }

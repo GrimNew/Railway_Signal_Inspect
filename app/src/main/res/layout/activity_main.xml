@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome_headline"
         android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"

@@ -7,8 +7,8 @@
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="0dp"
+        android:id="@+id/setting_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
@@ -71,20 +71,20 @@
         android:text="@string/button_setting_commit"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button_setting_cancle"
-        app:layout_constraintEnd_toStartOf="@+id/button_setting_cancle"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_setting_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/button_setting_cancel"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_setting_cancle"
+        android:id="@+id/button_setting_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="107dp"
         android:layout_marginEnd="2dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="106dp"
-        android:text="@string/button_setting_cancle"
+        android:text="@string/button_setting_cancel"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
