@@ -107,17 +107,19 @@ public class ScanActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //双击back键退出
-        if (System.currentTimeMillis() - ClickTime > 800) {
+        //管理员模式单击返回，用户模式双击back键退出
+        if (getSharedPreferences("user_info", MODE_PRIVATE).getBoolean("isAdmin",false)) {
+            super.onBackPressed();
+        }else if (System.currentTimeMillis() - ClickTime > 800) {
             Toast.makeText(ScanActivity.this,"再按一次返回或退出",Toast.LENGTH_SHORT).show();
             ClickTime = System.currentTimeMillis();
-        } else {
+        }else {
             new Thread(){
                 @Override
                 public void run() {
                     ((SuperApplication) getApplication()).SocketClose();
                 }
-            };
+            }.start();
             finish();
         }
     }

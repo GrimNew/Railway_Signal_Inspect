@@ -38,4 +38,5 @@
     <string name="scan_label">读取</string>
     <string name="burn_label">写入</string>
     <string name="select_label">选择</string>
+    <string name="exit_app">退出应用</string>
 </resources>

@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 if (((SuperApplication) getApplication()).SocketConnect()) {
                     ((SuperApplication) getApplication()).getPrintWriter().println("0#" + getUsernameText() + "#" + getPasswordText());
                     ((SuperApplication) getApplication()).getPrintWriter().flush();
+                    SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
                     //根据登陆用户权限不同，跳转到不同页面进行不同操作
                     switch ((((SuperApplication) getApplication()).getBufferedReader().readLine())) {
                         //跳转到烧录界面（管理员模式）
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                             runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
                             Intent intent = new Intent(MainActivity.this, SelectActivity.class);
                             startActivity(intent);
+                            editor.putBoolean("isAdmin",true);
                             finish();
                             break;
                         }
@@ -141,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                             runOnUiThread(() -> Toast.makeText(MainActivity.this, "登陆成功", Toast.LENGTH_SHORT).show());
                             Intent intent = new Intent(MainActivity.this, ScanActivity.class);
                             startActivity(intent);
+                            editor.putBoolean("isAdmin",false);
                             finish();
                             break;
                         }
@@ -150,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                             ((SuperApplication) getApplication()).SocketClose();
                             break;
                     }
+                    editor.apply();
                 } else {
                     runOnUiThread(() -> Toast.makeText(MainActivity.this, "连接超时，请检查网络环境", Toast.LENGTH_SHORT).show());
                 }

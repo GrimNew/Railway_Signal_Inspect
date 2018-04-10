@@ -18,7 +18,7 @@ public class SettingActivity extends AppCompatActivity {
         final TextView address = findViewById(R.id.address_text);
         final TextView port = findViewById(R.id.port_text);
         Button setting_commit = findViewById(R.id.button_setting_commit);
-        Button setting_cancel = findViewById(R.id.button_setting_cancle);
+        Button setting_cancel = findViewById(R.id.button_setting_cancel);
         android.support.v7.widget.Toolbar setting_toolbar = findViewById(R.id.setting_toolbar);
 
         //设置标题文字颜色

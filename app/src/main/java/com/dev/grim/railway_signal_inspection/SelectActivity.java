@@ -41,7 +41,7 @@ public class SelectActivity extends AppCompatActivity {
                 public void run() {
                     ((SuperApplication) getApplication()).SocketClose();
                 }
-            };
+            }.start();
             finish();
         }
     }
