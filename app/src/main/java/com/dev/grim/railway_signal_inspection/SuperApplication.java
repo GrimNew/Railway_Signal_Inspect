@@ -117,4 +117,8 @@ public class SuperApplication extends Application {
         }
         return false;
     }
+
+    boolean SocketStatus(){
+        return sslSocket.isConnected();
+    }
 }

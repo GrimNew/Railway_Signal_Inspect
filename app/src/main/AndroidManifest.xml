@@ -47,6 +47,18 @@
         <activity android:name="com.dev.grim.railway_signal_inspection.SelectActivity"
             android:label="@string/select_label"
             android:launchMode="singleTask"/>
+        <activity android:name="com.dev.grim.railway_signal_inspection.PlanActivity"
+            android:label="@string/plan_label"
+            android:launchMode="singleTask">
+        <!--    <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name="com.dev.grim.railway_signal_inspection.StepActivity"
+            android:label="@string/step_label"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

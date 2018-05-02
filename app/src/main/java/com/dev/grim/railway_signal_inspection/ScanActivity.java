@@ -42,7 +42,10 @@ public class ScanActivity extends AppCompatActivity {
             if (scanStatus) {
                 if (device_status.getText().toString().equals("")) {
                     Toast.makeText(ScanActivity.this, "状态信息不能为空", Toast.LENGTH_SHORT).show();
-                } else {
+                }else if (!((SuperApplication) getApplication()).SocketStatus()){
+                    Toast.makeText(ScanActivity.this, "服务器连接中断,请重登陆", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     new Thread() {
                         @Override
                         public void run() {
@@ -102,7 +105,6 @@ public class ScanActivity extends AppCompatActivity {
         } catch (IOException | FormatException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
